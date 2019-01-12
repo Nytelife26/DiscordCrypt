@@ -905,7 +905,7 @@ const discordCrypt = ( ( ) => {
              * @desc Used to find the search toolbar to inject all option buttons.
              * @type {string}
              */
-            this._searchUiClass = '.search .search-bar';
+            this._searchUiClass = '.da-search .da-searchBar';
 
             /* ============================================ */
         }
@@ -945,7 +945,7 @@ const discordCrypt = ( ( ) => {
          * @returns {string}
          */
         getVersion() {
-            return '2.2.0';
+            return '2.2.1';
         }
 
         /**
@@ -2598,12 +2598,8 @@ const discordCrypt = ( ( ) => {
             _configFile.channels[ message.channel_id ].ignoreIds.push( message.id );
             _discordCrypt._saveConfig();
 
-            /* Check if this is an incoming key exchange or a resulting message. */
-            if( _globalSessionState.hasOwnProperty( message.channel_id ) )
-                return _discordCrypt._handleAcceptedKeyRequest( message, remoteKeyInfo );
-
-            /* Check if we need to prompt. */
-            if( _configFile.autoAcceptKeyExchanges )
+            /* Check if this is an incoming key exchange, a resulting message or if we auto-accept. */
+            if( _globalSessionState.hasOwnProperty( message.channel_id ) || _configFile.autoAcceptKeyExchanges )
                 return _discordCrypt._handleAcceptedKeyRequest( message, remoteKeyInfo );
 
             /* Actually just the return string for the message. */
